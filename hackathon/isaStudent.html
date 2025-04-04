@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background: #f0f2f5;
+        }
+        .navbar {
+            background: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover {
+            color: #1a73e8;
+        }
+        .login-button {
+            background: #1a73e8;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .login-button:hover {
+            background: #1557b0;
+        }
+        .content {
+            margin-top: 80px;
+            padding: 2rem;
+        }
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+        .search-box {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .search-box:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 5px rgba(26, 115, 232, 0.2);
+        }
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+        .no-results {
+            text-align: center;
+            color: #666;
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            display: none;
+        }
+        .alumni-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+        .alumni-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .alumni-card:hover {
+            transform: translateY(-5px);
+        }
+        .alumni-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .alumni-details {
+            padding: 1.5rem;
+        }
+        .alumni-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1a73e8;
+            margin-bottom: 0.5rem;
+        }
+        .alumni-info {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        .alumni-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #333;
+        }
+        .contact-item i {
+            color: #1a73e8;
+        }
+        .contact-item a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+        .contact-item a:hover {
+            text-decoration: underline;
+        }
+        .section-title {
+            text-align: center;
+            color: #1a73e8;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            Student Portal
+        </a>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Resources</a>
+            <a href="#">Events</a>
+            <a href="#">Profile</a>
+            <a href="index.html" class="login-button">Login</a>
+        </div>
+    </nav>
+    <div class="content">
+        <h1 class="section-title">Alumni Network</h1>
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-box" placeholder="Search by name, company, or role..." id="searchInput">
+        </div>
+        <div class="no-results" id="noResults">No matching alumni found</div>
+        <div class="alumni-grid" id="alumniGrid">
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">John Doe</div>
+                    <div class="alumni-info">Software Engineer at Google</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 123-4567
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:john.doe@example.com">john.doe@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/johndoe" target="_blank">linkedin.com/in/johndoe</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Jane Smith</div>
+                    <div class="alumni-info">Product Manager at Microsoft</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 987-6543
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:jane.smith@example.com">jane.smith@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/janesmith" target="_blank">linkedin.com/in/janesmith</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Mike Johnson</div>
+                    <div class="alumni-info">Data Scientist at Amazon</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 456-7890
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:mike.johnson@example.com">mike.johnson@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/mikejohnson" target="_blank">linkedin.com/in/mikejohnson</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Sarah Williams</div>
+                    <div class="alumni-info">UX Designer at Apple</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 234-5678
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:sarah.williams@example.com">sarah.williams@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/sarahwilliams" target="_blank">linkedin.com/in/sarahwilliams</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">David Chen</div>
+                    <div class="alumni-info">Machine Learning Engineer at Tesla</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 345-6789
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:david.chen@example.com">david.chen@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/davidchen" target="_blank">linkedin.com/in/davidchen</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Emily Brown</div>
+                    <div class="alumni-info">Marketing Director at Facebook</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 456-7890
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:emily.brown@example.com">emily.brown@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/emilybrown" target="_blank">linkedin.com/in/emilybrown</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Robert Taylor</div>
+                    <div class="alumni-info">Senior Developer at Netflix</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 567-8901
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:robert.taylor@example.com">robert.taylor@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/roberttaylor" target="_blank">linkedin.com/in/roberttaylor</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Lisa Anderson</div>
+                    <div class="alumni-info">Business Analyst at Uber</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 678-9012
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:lisa.anderson@example.com">lisa.anderson@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/lisaanderson" target="_blank">linkedin.com/in/lisaanderson</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Michael Wilson</div>
+                    <div class="alumni-info">DevOps Engineer at Spotify</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 789-0123
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:michael.wilson@example.com">michael.wilson@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/michaelwilson" target="_blank">linkedin.com/in/michaelwilson</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Jennifer Lee</div>
+                    <div class="alumni-info">AI Researcher at OpenAI</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 890-1234
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:jennifer.lee@example.com">jennifer.lee@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/jenniferlee" target="_blank">linkedin.com/in/jenniferlee</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Thomas Clark</div>
+                    <div class="alumni-info">Cybersecurity Expert at IBM</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 901-2345
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:thomas.clark@example.com">thomas.clark@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/thomasclark" target="_blank">linkedin.com/in/thomasclark</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Patricia White</div>
+                    <div class="alumni-info">Cloud Architect at AWS</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 012-3456
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:patricia.white@example.com">patricia.white@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/patriciawhite" target="_blank">linkedin.com/in/patriciawhite</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Daniel Kim</div>
+                    <div class="alumni-info">Mobile Developer at Snapchat</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 123-4567
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:daniel.kim@example.com">daniel.kim@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/danielkim" target="_blank">linkedin.com/in/danielkim</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Rachel Green</div>
+                    <div class="alumni-info">UI/UX Designer at Adobe</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 234-5678
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:rachel.green@example.com">rachel.green@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/rachelgreen" target="_blank">linkedin.com/in/rachelgreen</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Kevin Martinez</div>
+                    <div class="alumni-info">Full Stack Developer at Twitter</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 345-6789
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:kevin.martinez@example.com">kevin.martinez@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/kevinmartinez" target="_blank">linkedin.com/in/kevinmartinez</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Jennifer Lee</div>
+                    <div class="alumni-info">AI Researcher at OpenAI</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 890-1234
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:jennifer.lee@example.com">jennifer.lee@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/jenniferlee" target="_blank">linkedin.com/in/jenniferlee</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Thomas Clark</div>
+                    <div class="alumni-info">Cybersecurity Expert at IBM</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 901-2345
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:thomas.clark@example.com">thomas.clark@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/thomasclark" target="_blank">linkedin.com/in/thomasclark</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Patricia White</div>
+                    <div class="alumni-info">Cloud Architect at AWS</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 012-3456
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:patricia.white@example.com">patricia.white@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/patriciawhite" target="_blank">linkedin.com/in/patriciawhite</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Daniel Kim</div>
+                    <div class="alumni-info">Mobile Developer at Snapchat</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 123-4567
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:daniel.kim@example.com">daniel.kim@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/danielkim" target="_blank">linkedin.com/in/danielkim</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Rachel Green</div>
+                    <div class="alumni-info">UI/UX Designer at Adobe</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 234-5678
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:rachel.green@example.com">rachel.green@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/rachelgreen" target="_blank">linkedin.com/in/rachelgreen</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Kevin Martinez</div>
+                    <div class="alumni-info">Full Stack Developer at Twitter</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 345-6789
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:kevin.martinez@example.com">kevin.martinez@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/kevinmartinez" target="_blank">linkedin.com/in/kevinmartinez</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Jennifer Lee</div>
+                    <div class="alumni-info">AI Researcher at OpenAI</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 890-1234
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:jennifer.lee@example.com">jennifer.lee@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/jenniferlee" target="_blank">linkedin.com/in/jenniferlee</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Thomas Clark</div>
+                    <div class="alumni-info">Cybersecurity Expert at IBM</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 901-2345
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:thomas.clark@example.com">thomas.clark@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/thomasclark" target="_blank">linkedin.com/in/thomasclark</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Patricia White</div>
+                    <div class="alumni-info">Cloud Architect at AWS</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 012-3456
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:patricia.white@example.com">patricia.white@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/patriciawhite" target="_blank">linkedin.com/in/patriciawhite</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Daniel Kim</div>
+                    <div class="alumni-info">Mobile Developer at Snapchat</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 123-4567
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:daniel.kim@example.com">daniel.kim@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/danielkim" target="_blank">linkedin.com/in/danielkim</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Rachel Green</div>
+                    <div class="alumni-info">UI/UX Designer at Adobe</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 234-5678
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:rachel.green@example.com">rachel.green@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/rachelgreen" target="_blank">linkedin.com/in/rachelgreen</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Kevin Martinez</div>
+                    <div class="alumni-info">Full Stack Developer at Twitter</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 345-6789
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:kevin.martinez@example.com">kevin.martinez@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/kevinmartinez" target="_blank">linkedin.com/in/kevinmartinez</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Jennifer Lee</div>
+                    <div class="alumni-info">AI Researcher at OpenAI</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 890-1234
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:jennifer.lee@example.com">jennifer.lee@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/jenniferlee" target="_blank">linkedin.com/in/jenniferlee</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Thomas Clark</div>
+                    <div class="alumni-info">Cybersecurity Expert at IBM</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 901-2345
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:thomas.clark@example.com">thomas.clark@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/thomasclark" target="_blank">linkedin.com/in/thomasclark</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Patricia White</div>
+                    <div class="alumni-info">Cloud Architect at AWS</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 012-3456
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:patricia.white@example.com">patricia.white@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/patriciawhite" target="_blank">linkedin.com/in/patriciawhite</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Daniel Kim</div>
+                    <div class="alumni-info">Mobile Developer at Snapchat</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 123-4567
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:daniel.kim@example.com">daniel.kim@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/danielkim" target="_blank">linkedin.com/in/danielkim</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Rachel Green</div>
+                    <div class="alumni-info">UI/UX Designer at Adobe</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 234-5678
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:rachel.green@example.com">rachel.green@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/rachelgreen" target="_blank">linkedin.com/in/rachelgreen</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alumni-card">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Alumni" class="alumni-image">
+                <div class="alumni-details">
+                    <div class="alumni-name">Kevin Martinez</div>
+                    <div class="alumni-info">Full Stack Developer at Twitter</div>
+                    <div class="alumni-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            +1 (555) 345-6789
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:kevin.martinez@example.com">kevin.martinez@example.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://linkedin.com/in/kevinmartinez" target="_blank">linkedin.com/in/kevinmartinez</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const alumniCards = document.querySelectorAll('.alumni-card');
+            const noResults = document.getElementById('noResults');
+            let visibleCount = 0;
+
+            alumniCards.forEach(card => {
+                const name = card.querySelector('.alumni-name').textContent.toLowerCase();
+                const info = card.querySelector('.alumni-info').textContent.toLowerCase();
+                const shouldShow = name.includes(searchTerm) || info.includes(searchTerm);
+                
+                card.style.display = shouldShow ? 'block' : 'none';
+                if (shouldShow) visibleCount++;
+            });
+
+            noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+        });
+    </script>
+</body>
+</html> 
