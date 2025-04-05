@@ -1,0 +1,94 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    width: 400px;
+    backdrop-filter: blur(5px);
+}
+.form-container {
+    display: none;
+}
+.form-container.active {
+    display: block;
+}
+h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #1a73e8;
+}
+.form-group {
+    margin-bottom: 1rem;
+}
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+button {
+    width: 100%;
+    padding: 0.8rem;
+    background: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+button:hover {
+    background: #1557b0;
+}
+.toggle-form {
+    text-align: center;
+    margin-top: 1rem;
+}
+.toggle-form a {
+    color: #1a73e8;
+    text-decoration: none;
+    cursor: pointer;
+}
+.toggle-form a:hover {
+    text-decoration: underline;
+}
+.radio-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+.radio-label input[type="radio"] {
+    width: auto;
+    margin: 0;
+}
+.radio-label span {
+    color: #333;
+} 

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Assistant Chatbot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/chatbot.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <i class="fas fa-robot"></i>
+            Alumni Assistant
+        </a>
+        <div class="nav-links">
+            <a href="isaAlumina.html" class="back-button">Back to Portal</a>
+        </div>
+    </nav>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>Alumni Assistant</h1>
+            <p>Ask me anything about the alumni network, events, or connecting with professionals</p>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                Hello! I'm your alumni assistant. How can I help you today?
+                <div class="message-time">Just now</div>
+            </div>
+        </div>
+        <div class="suggestions">
+            <div class="suggestion" onclick="sendSuggestion('How can I connect with alumni?')">Connect with Alumni</div>
+            <div class="suggestion" onclick="sendSuggestion('What events are coming up?')">Upcoming Events</div>
+            <div class="suggestion" onclick="sendSuggestion('How do I update my profile?')">Update Profile</div>
+            <div class="suggestion" onclick="sendSuggestion('Tell me about networking opportunities')">Networking</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off">
+            <button onclick="sendMessage()">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="js/chatbot.js"></script>
+</body>
+</html> 
